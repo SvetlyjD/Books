@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="radioContainer">
+        <div><input type="radio" name="option" id="wr" value="writing"><label for="wr">Написать самому</label>
+        </div>
+        <div><input type="radio" name="option" id="load" value="loading"><label for="load">Загрузить из файла</label>
+        </div>
+    </div>
+    <div class="formContainer">
+        <div class="writingBook">
+            <form action="">
+                Form1
+                <div><input class="nameWriting" type="text"></div>
+                <div><textarea name="" id="" cols="30" rows="10">Написать книгу</textarea></div>
+                <button type="submit">Сохранить книгу</button>
+            </form>
+        </div>
+        <div class="loadingBook">
+            Form2
+            <form action="/" method="POST" id="form">
+                <div><input class="nameOnload" type="text">
+                    <button type="submit">Загрузить файл</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
