@@ -10,3 +10,26 @@
     display: none;
 }
 
+.displayEditBook{
+    display: none;
+}
+
+.container {
+    width: 500px;
+}
+
+.editBook{
+    display: none;
+    border: 2px solid green;
+}
+
+.dropdownarea{
+    width: 100%;
+    height: 100px;
+    background-color: bisque;
+    border: 2px solid green;
+}   
+
+.dropdownareaOver{
+    background-color: gray;
+}

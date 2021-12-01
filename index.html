@@ -18,22 +18,45 @@
     </div>
     <div class="formContainer">
         <div class="writingBook">
-            <form action="">
+            <form action="" id="formWriting">
                 Form1
                 <div><input class="nameWriting" type="text"></div>
-                <div><textarea name="" id="" cols="30" rows="10">Написать книгу</textarea></div>
-                <button type="submit">Сохранить книгу</button>
+                <div><textarea name="" id="" cols="30" rows="10" class="descriptionBook">Написать книгу</textarea></div>
+                <button type="submit" class="saveBook">Сохранить книгу</button>
             </form>
         </div>
         <div class="loadingBook">
             Form2
-            <form action="/" method="POST" id="form">
-                <div><input class="nameOnload" type="text">
-                    <button type="submit">Загрузить файл</button>
-                </div>
+            <form action="" id="formDownload">
+                <input type="text" name="login" class="downloadLogin">
+                <input class="nameOnload" type="file" id="fileUpload" name="file"> Название
+                <input type="submit">
             </form>
         </div>
+        <button class="button">click</button>
     </div>
+    <div class="listFavoriteBooks">
+        Список любимых книг:
+        <div class="dropdownarea">перенесите сюда для добавления в список</div>
+    </div>
+    <br>
+    <br>
+    <div class="listBooks">Список книг:
+        <div class="container">
+        </div>
+        <div class="dropdownareaBooks">перенесите в область для добавления в список</div>
+    </div>
+
+    <div class="contentsBooks">Содержание книги
+        <div class="contentsOneBook"></div>
+    </div>
+
+    <div class="editBook">Редактировать книгу
+        <textarea name="" id="" cols="30" rows="10" class="editBookArea"></textarea>
+        <button class="saveOneBook" data-edit="">Сохранить</button>
+    </div>
+
+
     <script src="script.js"></script>
 </body>
 
