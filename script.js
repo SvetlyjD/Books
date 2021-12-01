@@ -165,21 +165,6 @@ document.querySelector(".editBook").addEventListener("click", function (event) {
 
 // делегирование draganddrop==============================================================
 
-// oneBook1.forEach(item => {
-//     item.addEventListener("dragstart", dragstart)
-//     item.addEventListener("dragend", dragend)
-// })
-
-// function dragstart(event) {
-//     console.log("dragstart");
-// }
-
-
-// function dragend(event) {
-//     console.log("dragend");
-// }
-
-
 document.querySelector(".container").addEventListener("dragstart", handleDragStart);
 function handleDragStart(event) {
     event.dataTransfer.setData("num", event.target.dataset.number)
@@ -196,17 +181,20 @@ function handleDragEnd(event) {
 document.querySelector(".dropdownarea").addEventListener("dragenter", handleDragEnter);
 function handleDragEnter(event) {
     event.preventDefault()
+    console.log("dragenter");
 }
 
 document.querySelector(".dropdownarea").addEventListener("dragleave", handleDragLeave);
 function handleDragLeave(event) {
-    event.preventDefault()
+    event.preventDefault();
+    console.log("dragleave");
 }
 
 
 document.querySelector(".dropdownarea").addEventListener("dragover", handleDragOver);
 function handleDragOver(event) {
     event.preventDefault()
+    console.log("dragover");
 }
 
 
