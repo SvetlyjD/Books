@@ -18,7 +18,7 @@ let editBookArea = document.querySelector(".editBookArea");
 let saveOneBook = document.querySelector(".saveOneBook");
 let dropdownAreaBooks = document.querySelector(".dropdownAreaBooks");
 let oneBook1 = document.querySelectorAll(".oneBook");
-
+let responseBack = {};
 
 // получаем данные для рендера с LocalStorage 
 if (localStorage.getItem("books")) {
@@ -61,7 +61,15 @@ loadingForm.onsubmit = async (e) => {
         body: formData
     });
     let result = await response.json();
-    console.log(result);
+    let newBook = {
+        name: downloadLogin.value,
+        description: result.text,
+        write: false
+    }
+    books.push(newBook);
+    localStorage.setItem("books", JSON.stringify(books));
+    renderLibrary();
+
 };
 
 // Пишем книгу =============================
