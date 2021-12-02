@@ -238,14 +238,21 @@ document.querySelector(".container").addEventListener("dragstart", handleDragSta
 function handleDragStart(event) {
     numfavoriteBooks = event.target.dataset.number;
     console.log("dragstart");
+    document.querySelector(".dropdownareaBooks").setAttribute("data-block", "block");
 }
 
 document.querySelector(".container").addEventListener("dragend", handleDragEnd);
 function handleDragEnd(event) {
-    document.querySelector(".dropdownarea").classList.remove("dropdownareaOver");
     console.log("dragEnd");
+}
+//     нужно прописать атрибут блокировки data-atribute на собственное поле при перетаскивании на него!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+document.querySelector(".dropdownarea").addEventListener("drop", handleDrop);
+function handleDrop(event) {
+    event.preventDefault();
+    document.querySelector(".dropdownarea").classList.remove("dropdownareaOver");
     favoritebooks.push(books[numfavoriteBooks]);
     deleteBook(numfavoriteBooks);
+    document.querySelector(".dropdownareaBooks").removeAttribute("data-block");
     localStorage.setItem("favoritebooks", JSON.stringify(favoritebooks));
     renderLibrary()
 }
@@ -262,6 +269,7 @@ document.querySelector(".dropdownarea").addEventListener("dragleave", handleDrag
 function handleDragLeave(event) {
     event.preventDefault();
     console.log("dragleave");
+
     this.classList.remove("dropdownareaOver");
 }
 
@@ -278,6 +286,7 @@ function handleDragOver(event) {
 document.querySelector(".listFavoriteBooks").addEventListener("dragstart", handleDragStartFavorite);
 function handleDragStartFavorite(event) {
     numBooks = event.target.dataset.number;
+    document.querySelector(".dropdownarea").setAttribute("data-block", "block");
     console.log("dragstart");
 }
 
@@ -290,6 +299,19 @@ function handleDragEndFavorite(event) {
     localStorage.setItem("books", JSON.stringify(books));
     renderLibrary()
 }
+
+
+// document.querySelector(".dropdownareaBooks").addEventListener("drop", handleDrop);
+// function handleDrop(event) {
+// event.preventDefault();
+// console.log("drop");
+// document.querySelector(".dropdownareaBooks").classList.remove("dropdownareaOver");
+// books.push(favoritebooks[numBooks]);
+// deletefavoriteBook(numBooks);
+// document.querySelector(".dropdownarea").removeAttribute("data-block");
+// localStorage.setItem("books", JSON.stringify(books));
+// renderLibrary()
+// }
 
 
 document.querySelector(".dropdownareaBooks").addEventListener("dragenter", handleDragEnterBooks);
