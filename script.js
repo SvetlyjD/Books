@@ -8,9 +8,11 @@ let downloadLogin = document.querySelector(".downloadLogin")
 let saveBook = document.querySelector(".saveBook");
 let books = [];
 let favoritebooks = [];
+let numfavoriteBooks;
 let descriptionBook = document.querySelector(".descriptionBook");
 let nameBook = document.querySelector(".nameWriting");
 let container = document.querySelector(".container");
+let containerfavoriteBooks = document.querySelector(".listFavoriteBooks");
 let readBook = document.querySelector(".readBook");
 let contentBook = document.querySelector(".contentsOneBook");
 let editOneBook = document.querySelector(".editBook");
@@ -24,7 +26,9 @@ let responseBack = {};
 if (localStorage.getItem("books")) {
     books = JSON.parse(localStorage.getItem("books"))
 }
-
+if (localStorage.getItem("favoritebooks")) {
+    favoritebooks = JSON.parse(localStorage.getItem("favoritebooks"))
+}
 // здесь должен быть РЕНДЕР
 renderLibrary();
 
@@ -64,12 +68,11 @@ loadingForm.onsubmit = async (e) => {
     let newBook = {
         name: downloadLogin.value,
         description: result.text,
-        write: false
+        write: 1
     }
     books.push(newBook);
     localStorage.setItem("books", JSON.stringify(books));
     renderLibrary();
-
 };
 
 // Пишем книгу =============================
@@ -78,7 +81,7 @@ saveBook.addEventListener("click", function () {
     let newBook = {
         name: nameBook.value,
         description: descriptionBook.value,
-        write: false
+        write: 1
     }
     if (newBook.name && newBook.description) { books.push(newBook) } else alert("Добавьте заголовок и(или) содержание книги")
     localStorage.setItem("books", JSON.stringify(books));
@@ -103,7 +106,21 @@ function renderLibrary() {
                                        <button class ="readEndBook" data-index=${index}>Прочитана</button>`
         container.append(blockOneBook);
     }
+        // сюда дописать рендер любимых книг
     )
+    containerfavoriteBooks.innerHTML = "";
+    favoritebooks.forEach((item, index) => {
+        let blockOneFavoriteBook = document.createElement("div");
+        blockOneFavoriteBook.classList.add("oneFavoriteBook");
+        blockOneFavoriteBook.setAttribute("draggable", "true");
+        blockOneFavoriteBook.setAttribute("data-number", index)
+        blockOneFavoriteBook.innerHTML = `${item.name}
+                                        <button class="readBook" data-index=${index}>Читать книгу</button>
+                                        <button class="reductBook" data-index=${index}>Редактировать</button>
+                                        <button class="deleteBook" data-index=${index}>Удалить</button>
+                                        <button class ="readEndBook" data-index=${index}>Прочитана</button>`
+        containerfavoriteBooks.append(blockOneFavoriteBook);
+    })
 }
 
 // функции обработки событий =====================================================================
@@ -153,6 +170,24 @@ document.querySelector(".container").addEventListener("click", function (event) 
     }
 })
 
+// делегирование блока с любимыми книгами
+
+// document.querySelector(".container").addEventListener("click", function (event) {
+//     let target = event.target;
+//     let indexBook = target.dataset.index;
+
+//     if (target.classList.contains("deleteBook")) {
+//         deleteBook(indexBook);
+//         renderLibrary();
+//     }
+//     if (target.classList.contains("readBook")) {
+//         readesBook(indexBook);
+//     }
+//     if (target.classList.contains("reductBook")) {
+//         editBook(indexBook);
+//     }
+// })
+
 // делегирование на блок с сохранением и редактированием
 
 document.querySelector(".editBook").addEventListener("click", function (event) {
@@ -167,14 +202,18 @@ document.querySelector(".editBook").addEventListener("click", function (event) {
 
 document.querySelector(".container").addEventListener("dragstart", handleDragStart);
 function handleDragStart(event) {
-    event.dataTransfer.setData("num", event.target.dataset.number)
+    numfavoriteBooks = event.target.dataset.number;
     console.log("dragstart");
 }
 
 document.querySelector(".container").addEventListener("dragend", handleDragEnd);
 function handleDragEnd(event) {
-    event.dataTransfer.setData("num", event.target.dataset.number)
+    document.querySelector(".dropdownarea").classList.remove("dropdownareaOver");
     console.log("dragEnd");
+    favoritebooks.push(books[numfavoriteBooks]);
+    deleteBook(numfavoriteBooks);
+    localStorage.setItem("favoritebooks", JSON.stringify(favoritebooks));
+    renderLibrary()
 }
 
 
@@ -182,12 +221,14 @@ document.querySelector(".dropdownarea").addEventListener("dragenter", handleDrag
 function handleDragEnter(event) {
     event.preventDefault()
     console.log("dragenter");
+    event.target.classList.add("dropdownareaOver");
 }
 
 document.querySelector(".dropdownarea").addEventListener("dragleave", handleDragLeave);
 function handleDragLeave(event) {
     event.preventDefault();
     console.log("dragleave");
+    this.classList.remove("dropdownareaOver");
 }
 
 
@@ -195,6 +236,7 @@ document.querySelector(".dropdownarea").addEventListener("dragover", handleDragO
 function handleDragOver(event) {
     event.preventDefault()
     console.log("dragover");
+
 }
 
 
