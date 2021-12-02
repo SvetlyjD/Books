@@ -10,54 +10,58 @@
 </head>
 
 <body>
-    <div class="radioContainer">
-        <div><input type="radio" name="option" id="wr" value="writing"><label for="wr">Написать самому</label>
-        </div>
-        <div><input type="radio" name="option" id="load" value="loading"><label for="load">Загрузить из файла</label>
-        </div>
-    </div>
-    <div class="formContainer">
-        <div class="writingBook">
-            <form action="" id="formWriting">
-                Form1
-                <div><input class="nameWriting" type="text"></div>
-                <div><textarea name="" id="" cols="30" rows="10" class="descriptionBook">Написать книгу</textarea></div>
-                <button type="submit" class="saveBook">Сохранить книгу</button>
-            </form>
-        </div>
-        <div class="loadingBook">
-            Form2
-            <form action="" id="formDownload">
-                <input type="text" name="login" class="downloadLogin">
-                <input class="nameOnload" type="file" id="fileUpload" name="file"> Название
-                <input type="submit">
-            </form>
-        </div>
-        <button class="button">click</button>
-    </div>
-    <div class="containerfavoriteBooks">
-        Список любимых книг:
-        <div class="listFavoriteBooks">
-        </div>
-        <div class="dropdownarea">Перенесите сюда для добавления в список</div>
-    </div>
-    <br>
-    <br>
-    <div class="listBooks">Список книг:
-        <div class="container">
-        </div>
-        <div class="dropdownareaBooks">перенесите в область для добавления в список</div>
-    </div>
+    <div class="libraryBooks">
 
-    <div class="contentsBooks">Содержание книги
-        <div class="contentsOneBook"></div>
-    </div>
 
-    <div class="editBook">Редактировать книгу
-        <textarea name="" id="" cols="30" rows="10" class="editBookArea"></textarea>
-        <button class="saveOneBook" data-edit="">Сохранить</button>
-    </div>
+        <div class="containerfavoriteBooks">
+            <h2>Список любимых книг:</h2>
+            <div class="listFavoriteBooks">
+            </div>
+            <div class="dropdownarea">Перенесите сюда для добавления в список</div>
+        </div>
+        <br>
+        <br>
+        <div class="listBooks">
+            <h2>Список книг:</h2>
+            <div class="container">
+            </div>
+            <div class="dropdownareaBooks">перенесите в область для добавления в список</div>
+        </div>
 
+        <div class="contentsBooks">Содержание книги
+            <div class="contentsOneBook"></div>
+        </div>
+        <div class="radioContainer">
+            <div><input type="radio" name="option" id="wr" value="writing"><label for="wr">Написать самому</label>
+            </div>
+            <div><input type="radio" name="option" id="load" value="loading"><label for="load">Загрузить из
+                    файла</label>
+            </div>
+        </div>
+        <div class="formContainer">
+            <div class="writingBook">
+                <form action="" id="formWriting">
+                    Form1
+                    <div><input class="nameWriting" type="text"></div>
+                    <div><textarea name="" id="" cols="30" rows="10" class="descriptionBook">Написать книгу</textarea>
+                    </div>
+                    <button type="submit" class="saveBook">Сохранить книгу</button>
+                </form>
+            </div>
+            <div class="loadingBook">
+                Form2
+                <form action="" id="formDownload">
+                    <input type="text" name="login" class="downloadLogin">
+                    <input class="nameOnload" type="file" id="fileUpload" name="file"> Название
+                    <input type="submit">
+                </form>
+            </div>
+        </div>
+        <div class="editBook">Редактировать книгу
+            <textarea name="" id="" cols="30" rows="10" class="editBookArea"></textarea>
+            <button class="saveOneBook" data-edit="">Сохранить</button>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>

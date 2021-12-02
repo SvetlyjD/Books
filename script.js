@@ -9,6 +9,7 @@ let saveBook = document.querySelector(".saveBook");
 let books = [];
 let favoritebooks = [];
 let numfavoriteBooks;
+let numBooks;
 let descriptionBook = document.querySelector(".descriptionBook");
 let nameBook = document.querySelector(".nameWriting");
 let container = document.querySelector(".container");
@@ -130,8 +131,9 @@ function deleteBook(element) {
     localStorage.setItem("books", JSON.stringify(books));
 }
 
-// чтение книги
+// чтение книги1
 function readesBook(element) {
+    console.log(element);
     contentBook.innerHTML = books[element].description;
 }
 
@@ -145,12 +147,41 @@ function editBook(element) {
 
 //сохранить книгу
 function saveEditBook(element) {
-    books[element].description = editBookArea.value;
-    localStorage.setItem("books", JSON.stringify(books));
+    // console.log(document.querySelector(".saveOneBook").dataset.save);
+    if (document.querySelector(".saveOneBook").dataset.save == "books") {
+        books[element].description = editBookArea.value;
+        localStorage.setItem("books", JSON.stringify(books));
+    } else if (
+        document.querySelector(".saveOneBook").dataset.save == "favoriteBooks"
+    ) {
+        favoritebooks[element].description = editBookArea.value;
+        localStorage.setItem("favoritebooks", JSON.stringify(favoritebooks));
+    }
+
     renderLibrary();
     editOneBook.style.display = "none";
 }
 
+// функции обработки событий любимые книги =====================================================================
+// удаление любимые книги
+function deletefavoriteBook(element) {
+    favoritebooks = favoritebooks.filter((item, index) => index != element)
+    localStorage.setItem("favoritebooks", JSON.stringify(favoritebooks));
+}
+
+// чтение любимые книги1
+function readesfavoriteBook(element) {
+    console.log(element);
+    contentBook.innerHTML = favoritebooks[element].description;
+}
+
+//редактировать любимую книгу
+function editfavoriteBook(element) {
+    editBookArea.value = favoritebooks[element].description;
+    saveOneBook.dataset.edit = element;
+    editOneBook.style.display = "block";
+
+}
 
 // задать обработку событий через делегирование блока со списком книг================================================
 
@@ -166,39 +197,42 @@ document.querySelector(".container").addEventListener("click", function (event) 
         readesBook(indexBook);
     }
     if (target.classList.contains("reductBook")) {
+        document.querySelector(".saveOneBook").setAttribute("data-save", "books");
         editBook(indexBook);
     }
 })
 
-// делегирование блока с любимыми книгами
+// делегирование блока с любимыми книгами =====================================================================
 
-// document.querySelector(".container").addEventListener("click", function (event) {
-//     let target = event.target;
-//     let indexBook = target.dataset.index;
+document.querySelector(".listFavoriteBooks").addEventListener("click", function (event) {
+    let target = event.target;
+    let indexBook = target.dataset.index;
 
-//     if (target.classList.contains("deleteBook")) {
-//         deleteBook(indexBook);
-//         renderLibrary();
-//     }
-//     if (target.classList.contains("readBook")) {
-//         readesBook(indexBook);
-//     }
-//     if (target.classList.contains("reductBook")) {
-//         editBook(indexBook);
-//     }
-// })
+    if (target.classList.contains("deleteBook")) {
+        deletefavoriteBook(indexBook);
+        renderLibrary();
+    }
+    if (target.classList.contains("readBook")) {
+        readesfavoriteBook(indexBook);
+    }
+    if (target.classList.contains("reductBook")) {
+        document.querySelector(".saveOneBook").setAttribute("data-save", "favoriteBooks");
+        editfavoriteBook(indexBook);
+    }
+})
 
 // делегирование на блок с сохранением и редактированием
 
 document.querySelector(".editBook").addEventListener("click", function (event) {
     let target = event.target;
     let indexBook = target.dataset.edit;
-    if (target.classList.contains("saveOneBook")) {
+    if (target.classList.contains("saveOneBook")) {                              // кнопка сохранения книги=================================
+        console.log(indexBook);
         saveEditBook(indexBook);
     }
 })
 
-// делегирование draganddrop==============================================================
+// делегирование draganddrop перенос из общих в любимые==============================================================
 
 document.querySelector(".container").addEventListener("dragstart", handleDragStart);
 function handleDragStart(event) {
@@ -237,6 +271,46 @@ function handleDragOver(event) {
     event.preventDefault()
     console.log("dragover");
 
+}
+
+// делегирование draganddrop перенос книг из любимых в общий блок==============================================================
+
+document.querySelector(".listFavoriteBooks").addEventListener("dragstart", handleDragStartFavorite);
+function handleDragStartFavorite(event) {
+    numBooks = event.target.dataset.number;
+    console.log("dragstart");
+}
+
+document.querySelector(".listFavoriteBooks").addEventListener("dragend", handleDragEndFavorite);
+function handleDragEndFavorite(event) {
+    document.querySelector(".dropdownareaBooks").classList.remove("dropdownareaOver");
+    console.log("dragEnd1");
+    books.push(favoritebooks[numBooks]);
+    deletefavoriteBook(numBooks);
+    localStorage.setItem("books", JSON.stringify(books));
+    renderLibrary()
+}
+
+
+document.querySelector(".dropdownareaBooks").addEventListener("dragenter", handleDragEnterBooks);
+function handleDragEnterBooks(event) {
+    event.preventDefault()
+    console.log("dragenter");
+    event.target.classList.add("dropdownareaOver");
+}
+
+document.querySelector(".dropdownareaBooks").addEventListener("dragleave", handleDragLeaveBooks);
+function handleDragLeaveBooks(event) {
+    event.preventDefault();
+    console.log("dragleave");
+    this.classList.remove("dropdownareaOver");
+}
+
+
+document.querySelector(".dropdownareaBooks").addEventListener("dragover", handleDragOverBooks);
+function handleDragOverBooks(event) {
+    event.preventDefault()
+    console.log("dragover");
 }
 
 
