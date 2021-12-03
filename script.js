@@ -133,7 +133,6 @@ function deleteBook(element) {
 
 // чтение книги1
 function readesBook(element) {
-    console.log(element);
     contentBook.innerHTML = books[element].description;
 }
 
@@ -147,7 +146,6 @@ function editBook(element) {
 
 //сохранить книгу
 function saveEditBook(element) {
-    // console.log(document.querySelector(".saveOneBook").dataset.save);
     if (document.querySelector(".saveOneBook").dataset.save == "books") {
         books[element].description = editBookArea.value;
         localStorage.setItem("books", JSON.stringify(books));
@@ -171,7 +169,6 @@ function deletefavoriteBook(element) {
 
 // чтение любимые книги1
 function readesfavoriteBook(element) {
-    console.log(element);
     contentBook.innerHTML = favoritebooks[element].description;
 }
 
@@ -180,7 +177,6 @@ function editfavoriteBook(element) {
     editBookArea.value = favoritebooks[element].description;
     saveOneBook.dataset.edit = element;
     editOneBook.style.display = "block";
-
 }
 
 // задать обработку событий через делегирование блока со списком книг================================================
@@ -188,7 +184,6 @@ function editfavoriteBook(element) {
 document.querySelector(".container").addEventListener("click", function (event) {
     let target = event.target;
     let indexBook = target.dataset.index;
-
     if (target.classList.contains("deleteBook")) {
         deleteBook(indexBook);
         renderLibrary();
@@ -227,7 +222,6 @@ document.querySelector(".editBook").addEventListener("click", function (event) {
     let target = event.target;
     let indexBook = target.dataset.edit;
     if (target.classList.contains("saveOneBook")) {                              // кнопка сохранения книги=================================
-        console.log(indexBook);
         saveEditBook(indexBook);
     }
 })
@@ -237,39 +231,37 @@ document.querySelector(".editBook").addEventListener("click", function (event) {
 document.querySelector(".container").addEventListener("dragstart", handleDragStart);
 function handleDragStart(event) {
     numfavoriteBooks = event.target.dataset.number;
-    console.log("dragstart");
     document.querySelector(".dropdownareaBooks").setAttribute("data-block", "block");
 }
 
 document.querySelector(".container").addEventListener("dragend", handleDragEnd);
 function handleDragEnd(event) {
-    console.log("dragEnd");
+    document.querySelector(".dropdownareaBooks").removeAttribute("data-block");
+    document.querySelector(".dropdownareaBooks").classList.remove("dropdownareaOver");
 }
 //     нужно прописать атрибут блокировки data-atribute на собственное поле при перетаскивании на него!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 document.querySelector(".dropdownarea").addEventListener("drop", handleDrop);
 function handleDrop(event) {
     event.preventDefault();
-    document.querySelector(".dropdownarea").classList.remove("dropdownareaOver");
-    favoritebooks.push(books[numfavoriteBooks]);
-    deleteBook(numfavoriteBooks);
-    document.querySelector(".dropdownareaBooks").removeAttribute("data-block");
-    localStorage.setItem("favoritebooks", JSON.stringify(favoritebooks));
-    renderLibrary()
+    if (document.querySelector(".dropdownarea").dataset.block != "block") {
+        favoritebooks.push(books[numfavoriteBooks]);
+        deleteBook(numfavoriteBooks);
+        document.querySelector(".dropdownareaBooks").removeAttribute("data-block");
+        localStorage.setItem("favoritebooks", JSON.stringify(favoritebooks));
+        document.querySelector(".dropdownarea").classList.remove("dropdownareaOver");
+        renderLibrary()
+    } else return
 }
-
 
 document.querySelector(".dropdownarea").addEventListener("dragenter", handleDragEnter);
 function handleDragEnter(event) {
     event.preventDefault()
-    console.log("dragenter");
     event.target.classList.add("dropdownareaOver");
 }
 
 document.querySelector(".dropdownarea").addEventListener("dragleave", handleDragLeave);
 function handleDragLeave(event) {
     event.preventDefault();
-    console.log("dragleave");
-
     this.classList.remove("dropdownareaOver");
 }
 
@@ -277,8 +269,6 @@ function handleDragLeave(event) {
 document.querySelector(".dropdownarea").addEventListener("dragover", handleDragOver);
 function handleDragOver(event) {
     event.preventDefault()
-    console.log("dragover");
-
 }
 
 // делегирование draganddrop перенос книг из любимых в общий блок==============================================================
@@ -287,52 +277,44 @@ document.querySelector(".listFavoriteBooks").addEventListener("dragstart", handl
 function handleDragStartFavorite(event) {
     numBooks = event.target.dataset.number;
     document.querySelector(".dropdownarea").setAttribute("data-block", "block");
-    console.log("dragstart");
 }
 
 document.querySelector(".listFavoriteBooks").addEventListener("dragend", handleDragEndFavorite);
 function handleDragEndFavorite(event) {
-    document.querySelector(".dropdownareaBooks").classList.remove("dropdownareaOver");
-    console.log("dragEnd1");
-    books.push(favoritebooks[numBooks]);
-    deletefavoriteBook(numBooks);
-    localStorage.setItem("books", JSON.stringify(books));
-    renderLibrary()
+    event.preventDefault();
+    document.querySelector(".dropdownarea").classList.remove("dropdownareaOver");
+    document.querySelector(".dropdownarea").removeAttribute("data-block");
 }
 
+document.querySelector(".dropdownareaBooks").addEventListener("drop", handleFavoriteDrop);
+function handleFavoriteDrop(event) {
 
-// document.querySelector(".dropdownareaBooks").addEventListener("drop", handleDrop);
-// function handleDrop(event) {
-// event.preventDefault();
-// console.log("drop");
-// document.querySelector(".dropdownareaBooks").classList.remove("dropdownareaOver");
-// books.push(favoritebooks[numBooks]);
-// deletefavoriteBook(numBooks);
-// document.querySelector(".dropdownarea").removeAttribute("data-block");
-// localStorage.setItem("books", JSON.stringify(books));
-// renderLibrary()
-// }
+    if (document.querySelector(".dropdownareaBooks").dataset.block != "block") {
+        document.querySelector(".dropdownarea").removeAttribute("data-block");
+        document.querySelector(".dropdownareaBooks").classList.remove("dropdownareaOver");
+        books.push(favoritebooks[numBooks]);
+        deletefavoriteBook(numBooks);
+        localStorage.setItem("books", JSON.stringify(books));
+        renderLibrary()
+    } else return;
+}
 
 
 document.querySelector(".dropdownareaBooks").addEventListener("dragenter", handleDragEnterBooks);
 function handleDragEnterBooks(event) {
     event.preventDefault()
-    console.log("dragenter");
     event.target.classList.add("dropdownareaOver");
 }
 
 document.querySelector(".dropdownareaBooks").addEventListener("dragleave", handleDragLeaveBooks);
 function handleDragLeaveBooks(event) {
     event.preventDefault();
-    console.log("dragleave");
     this.classList.remove("dropdownareaOver");
 }
-
 
 document.querySelector(".dropdownareaBooks").addEventListener("dragover", handleDragOverBooks);
 function handleDragOverBooks(event) {
     event.preventDefault()
-    console.log("dragover");
 }
 
 

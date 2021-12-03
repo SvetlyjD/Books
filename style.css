@@ -1,5 +1,10 @@
+button{
+    border-radius: 5px;
+    background-color: coral;
+}
+
 .libraryBooks{
-    background-color: lightskyblue;
+    background-color: lightyellow;
 }
 
 .writingBook,.loadingBook{
@@ -43,4 +48,18 @@
 
 .dropdownareaOver{
     background-color: gray;
+}
+
+.oneFavoriteBook{
+    background-color: lightgreen;
+margin-top: 1%;
+margin-bottom: 1%;
+border: 1px solid green;
+}
+
+.oneBook{
+    background-color: lightskyblue;
+margin-top: 1%;
+margin-bottom: 1%;
+border: 1px solid blue;
 }
