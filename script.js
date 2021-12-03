@@ -69,7 +69,8 @@ loadingForm.onsubmit = async (e) => {
     let newBook = {
         name: downloadLogin.value,
         description: result.text,
-        write: 1
+        write: 1,
+        date: Date.now()
     }
     books.push(newBook);
     localStorage.setItem("books", JSON.stringify(books));
@@ -82,9 +83,11 @@ saveBook.addEventListener("click", function () {
     let newBook = {
         name: nameBook.value,
         description: descriptionBook.value,
-        write: 1
+        write: 1,
+        date: Date.now()
     }
     if (newBook.name && newBook.description) { books.push(newBook) } else alert("Добавьте заголовок и(или) содержание книги")
+    books = books.sort(function (a, b) { return a.write - b.write || a.date - b.date })
     localStorage.setItem("books", JSON.stringify(books));
     renderLibrary();
 
@@ -99,11 +102,12 @@ function renderLibrary() {
         let blockOneBook = document.createElement("div");
         blockOneBook.classList.add("oneBook");
         blockOneBook.setAttribute("draggable", "true");
-        blockOneBook.setAttribute("data-number", index)
-        blockOneBook.innerHTML = `${item.name}
-                                       <button class="readBook" data-index=${index}>Читать книгу</button>
+        blockOneBook.setAttribute("data-number", index);
+        if (item.write == 2) { blockOneBook.classList.add("readingBooks") }
+        blockOneBook.innerHTML = `<div class ="bookName">${item.name}</div>
+                                       <button class="readBook" data-index=${index}>Читать</button>
                                        <button class="reductBook" data-index=${index}>Редактировать</button>
-                                       <button class="deleteBook" data-index=${index}>Удалить</button>
+                                       <button class="deleteBook" data-index=${index}>X</button>
                                        <button class ="readEndBook" data-index=${index}>Прочитана</button>`
         container.append(blockOneBook);
     }
@@ -114,11 +118,12 @@ function renderLibrary() {
         let blockOneFavoriteBook = document.createElement("div");
         blockOneFavoriteBook.classList.add("oneFavoriteBook");
         blockOneFavoriteBook.setAttribute("draggable", "true");
+        if (item.write == 2) { blockOneFavoriteBook.classList.add("readingBooks") }
         blockOneFavoriteBook.setAttribute("data-number", index)
-        blockOneFavoriteBook.innerHTML = `${item.name}
-                                        <button class="readBook" data-index=${index}>Читать книгу</button>
+        blockOneFavoriteBook.innerHTML = `<div class ="bookName">${item.name}</div>
+                                        <button class="readBook" data-index=${index}>Читать</button>
                                         <button class="reductBook" data-index=${index}>Редактировать</button>
-                                        <button class="deleteBook" data-index=${index}>Удалить</button>
+                                        <button class="deleteBook" data-index=${index}>X</button>
                                         <button class ="readEndBook" data-index=${index}>Прочитана</button>`
         containerfavoriteBooks.append(blockOneFavoriteBook);
     })
@@ -142,6 +147,16 @@ function editBook(element) {
     saveOneBook.dataset.edit = element;
     editOneBook.style.display = "block";
 
+}
+
+function readEndBook(indexBook) {
+    if (books[indexBook].write == 1) {
+        books[indexBook].write = 2
+    } else if (books[indexBook].write == 2) {
+        books[indexBook].write = 1
+    }
+    books = books.sort(function (a, b) { return a.write - b.write || a.date - b.date })
+    localStorage.setItem("books", JSON.stringify(books));
 }
 
 //сохранить книгу
@@ -179,6 +194,20 @@ function editfavoriteBook(element) {
     editOneBook.style.display = "block";
 }
 
+// любимая книга прочитана
+
+function readEndfavoriteBook(indexBook) {
+    if (favoritebooks[indexBook].write == 1) {
+        favoritebooks[indexBook].write = 2
+    } else if (favoritebooks[indexBook].write == 2) {
+        favoritebooks[indexBook].write = 1
+    }
+
+    favoritebooks = favoritebooks.sort(function (a, b) { return a.write - b.write || a.date - b.date })
+    localStorage.setItem("favoritebooks", JSON.stringify(favoritebooks));
+
+}
+
 // задать обработку событий через делегирование блока со списком книг================================================
 
 document.querySelector(".container").addEventListener("click", function (event) {
@@ -194,6 +223,11 @@ document.querySelector(".container").addEventListener("click", function (event) 
     if (target.classList.contains("reductBook")) {
         document.querySelector(".saveOneBook").setAttribute("data-save", "books");
         editBook(indexBook);
+    }
+    if (target.classList.contains("readEndBook")) {
+        readEndBook(indexBook);
+
+        renderLibrary();
     }
 })
 
@@ -213,6 +247,11 @@ document.querySelector(".listFavoriteBooks").addEventListener("click", function 
     if (target.classList.contains("reductBook")) {
         document.querySelector(".saveOneBook").setAttribute("data-save", "favoriteBooks");
         editfavoriteBook(indexBook);
+    }
+
+    if (target.classList.contains("readEndBook")) {
+        readEndfavoriteBook(indexBook);
+        renderLibrary();
     }
 })
 
@@ -247,6 +286,7 @@ function handleDrop(event) {
         favoritebooks.push(books[numfavoriteBooks]);
         deleteBook(numfavoriteBooks);
         document.querySelector(".dropdownareaBooks").removeAttribute("data-block");
+        favoritebooks = favoritebooks.sort(function (a, b) { return a.write - b.write || a.date - b.date })
         localStorage.setItem("favoritebooks", JSON.stringify(favoritebooks));
         document.querySelector(".dropdownarea").classList.remove("dropdownareaOver");
         renderLibrary()
@@ -294,6 +334,7 @@ function handleFavoriteDrop(event) {
         document.querySelector(".dropdownareaBooks").classList.remove("dropdownareaOver");
         books.push(favoritebooks[numBooks]);
         deletefavoriteBook(numBooks);
+        books = books.sort(function (a, b) { return a.write - b.write || a.date - b.date })
         localStorage.setItem("books", JSON.stringify(books));
         renderLibrary()
     } else return;
@@ -316,5 +357,9 @@ document.querySelector(".dropdownareaBooks").addEventListener("dragover", handle
 function handleDragOverBooks(event) {
     event.preventDefault()
 }
+
+
+
+
 
 

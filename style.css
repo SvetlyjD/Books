@@ -4,7 +4,13 @@ button{
 }
 
 .libraryBooks{
+    display: flex;
     background-color: lightyellow;
+}
+
+.libray {display: block;
+    width: 45%;
+    border:2px solid lightskyblue;
 }
 
 .writingBook,.loadingBook{
@@ -24,7 +30,7 @@ button{
 }
 
 .container {
-    width: 500px;
+    
 }
 
 .editBook{
@@ -33,17 +39,17 @@ button{
 }
 
 .dropdownarea{
-    width: 100%;
+    width: 99%;
     height: 100px;
     background-color: bisque;
-    border: 2px solid green;
+    border: 1px solid grey;
 }   
 
 .dropdownareaBooks{
-    width: 100%;
+    width: 99%;
     height: 100px;
     background-color: bisque;
-    border: 2px solid green;
+    border: 1px solid gray;
 }   
 
 .dropdownareaOver{
@@ -52,6 +58,7 @@ button{
 
 .oneFavoriteBook{
     background-color: lightgreen;
+    text-align: center;
 margin-top: 1%;
 margin-bottom: 1%;
 border: 1px solid green;
@@ -59,7 +66,44 @@ border: 1px solid green;
 
 .oneBook{
     background-color: lightskyblue;
+    text-align: center;
 margin-top: 1%;
 margin-bottom: 1%;
 border: 1px solid blue;
+margin-left: auto;
+margin-right: auto;
+}
+
+.readingBooks {
+    background-color: crimson;
+}
+.contentsBooks {
+    display: block;
+    width: 100%;
+    text-align: center;
+    border: 2px solid lightskyblue;
+}
+
+.headercontents {
+    margin-top: 2%;
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.contentsOneBook {
+    text-align: justify;
+    height: 80%;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-top: 3%;
+    border: 2px solid gray;
+}
+
+.bookName{
+    display: block;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+    margin-left: 1%;
+    margin-bottom: 1%;
 }
