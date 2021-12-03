@@ -29,10 +29,6 @@ button{
     display: none;
 }
 
-.container {
-    
-}
-
 .editBook{
     display: none;
     border: 2px solid green;

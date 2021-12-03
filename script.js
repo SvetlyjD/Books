@@ -38,13 +38,15 @@ renderLibrary();
 function testRadio() {
     if (this.value == "writing") {
         writingForm.classList.remove("displayNone"); writingForm.classList.add("displayBlock");
-        loadingForm.classList.remove("displayBlock"); loadingForm.classList.add("displayNone")
+        loadingForm.classList.remove("displayBlock"); loadingForm.classList.add("displayNone");
+        editOneBook.style.display = "none";
     }
     else
         if
             (this.value == "loading") {
             loadingForm.classList.add("displayBlock"); loadingForm.classList.remove("displayNone");
             writingForm.classList.add("displayNone"); writingForm.classList.remove("displayBlock");
+            editOneBook.style.display = "none";
         };
 }
 
@@ -145,6 +147,8 @@ function readesBook(element) {
 function editBook(element) {
     editBookArea.value = books[element].description;
     saveOneBook.dataset.edit = element;
+    loadingForm.classList.remove("displayBlock"); loadingForm.classList.add("displayNone");
+    writingForm.classList.add("displayNone"); writingForm.classList.remove("displayBlock");
     editOneBook.style.display = "block";
 
 }
@@ -170,9 +174,10 @@ function saveEditBook(element) {
         favoritebooks[element].description = editBookArea.value;
         localStorage.setItem("favoritebooks", JSON.stringify(favoritebooks));
     }
-
-    renderLibrary();
+    // document.querySelector(".coontentsOneBook").classList.add("displayBlock");
     editOneBook.style.display = "none";
+    renderLibrary();
+
 }
 
 // функции обработки событий любимые книги =====================================================================
@@ -191,6 +196,8 @@ function readesfavoriteBook(element) {
 function editfavoriteBook(element) {
     editBookArea.value = favoritebooks[element].description;
     saveOneBook.dataset.edit = element;
+    loadingForm.classList.remove("displayBlock"); loadingForm.classList.add("displayNone");
+    writingForm.classList.add("displayNone"); writingForm.classList.remove("displayBlock");
     editOneBook.style.display = "block";
 }
 
